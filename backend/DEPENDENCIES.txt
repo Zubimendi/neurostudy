@@ -1,0 +1,8 @@
+Required Go packages (run these commands):
+
+go get github.com/gorilla/mux
+go get github.com/lib/pq
+go get github.com/golang-jwt/jwt/v5
+go get github.com/joho/godotenv
+go get golang.org/x/crypto/bcrypt
+go get github.com/cloudinary/cloudinary-go/v2

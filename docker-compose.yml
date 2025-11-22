@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: neurostudy
+      POSTGRES_USER: neurostudy
+      POSTGRES_PASSWORD: neurostudy123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgresql://neurostudy:neurostudy123@postgres:5432/neurostudy
+      AI_WORKER_URL: http://ai-worker:5000
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+
+  ai-worker:
+    build: ./ai-worker
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://neurostudy:neurostudy123@postgres:5432/neurostudy
+    depends_on:
+      - postgres
+    volumes:
+      - ./ai-worker:/app
+
+volumes:
+  postgres_data:
