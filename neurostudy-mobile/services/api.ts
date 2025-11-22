@@ -1,16 +1,16 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
-// Update these URLs based on your environment
-const API_BASE_URL = __DEV__ 
-  ? 'http://10.0.2.2:8080/api/v1'  // Android emulator
-  // ? 'http://localhost:8080/api/v1'  // iOS simulator
-  : 'https://your-production-api.com/api/v1';
+// Read from expo config (which reads from .env)
+const API_BASE_URL = Constants.expoConfig?.extra?.apiUrl || 'http://10.65.72.243:8080/api/v1';
+const AI_BASE_URL = Constants.expoConfig?.extra?.aiWorkerUrl || 'http://10.65.72.243:5000/api';
 
-const AI_BASE_URL = __DEV__
-  ? 'http://10.0.2.2:5000/api'
-  : 'https://your-production-ai.com/api';
+console.log('📡 API Configuration:');
+console.log('   Backend:', API_BASE_URL);
+console.log('   AI Worker:', AI_BASE_URL);
 
+// Rest of the file stays the same...
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 30000,
@@ -19,7 +19,6 @@ const apiClient = axios.create({
   },
 });
 
-// Request interceptor
 apiClient.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('authToken');
@@ -31,13 +30,11 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
       await AsyncStorage.removeItem('authToken');
-      // Router will handle redirect
     }
     return Promise.reject(error);
   }

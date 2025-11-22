@@ -3,7 +3,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"net/http"
-	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/Zubimendi/neurostudy/internal/auth"
 	"github.com/Zubimendi/neurostudy/internal/database"

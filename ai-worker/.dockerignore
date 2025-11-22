@@ -1,0 +1,30 @@
+# ai-worker/.dockerignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Environment files
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Uploads and temp
+uploads/
+temp/
+
+# Models (will be downloaded on first run)
+*.pth
+*.pt

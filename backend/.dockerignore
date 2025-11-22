@@ -1,0 +1,31 @@
+# backend/.dockerignore
+
+# Binaries
+*.exe
+*.dll
+*.so
+*.dylib
+main
+
+# Test and coverage files
+*.test
+*.out
+coverage.txt
+
+# Environment files
+.env
+*.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Dependencies
+vendor/
+
+# Temporary files
+tmp/
+temp/
