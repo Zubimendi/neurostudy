@@ -93,14 +93,15 @@ func main() {
 	api.HandleFunc("/auth/register", handlers.Register).Methods("POST")
 	api.HandleFunc("/auth/login", handlers.Login).Methods("POST")
 
-	// Protected routes
+	// Protected routes - IMPORTANT: Register more specific routes FIRST
 	protected := api.PathPrefix("").Subrouter()
 	protected.Use(middleware.AuthMiddleware)
 	
+	// Register /study/recent BEFORE /study/{id} (more specific first!)
+	protected.HandleFunc("/study/recent", handlers.GetRecentSessions).Methods("GET")
+	protected.HandleFunc("/study/{id}", handlers.GetStudySession).Methods("GET")
 	protected.HandleFunc("/upload", handlers.UploadImage).Methods("POST")
 	protected.HandleFunc("/process", handlers.ProcessImage).Methods("POST")
-	protected.HandleFunc("/study/{id}", handlers.GetStudySession).Methods("GET")
-	protected.HandleFunc("/study/recent", handlers.GetRecentSessions).Methods("GET")
 
 	// Apply CORS
 	handler := c.Handler(router)
@@ -110,10 +111,10 @@ func main() {
 	log.Printf("📍 Endpoints registered:")
 	log.Printf("   - POST /api/v1/auth/register")
 	log.Printf("   - POST /api/v1/auth/login")
+	log.Printf("   - GET  /api/v1/study/recent (protected) ⭐")
+	log.Printf("   - GET  /api/v1/study/:id (protected)")
 	log.Printf("   - POST /api/v1/upload (protected)")
 	log.Printf("   - POST /api/v1/process (protected)")
-	log.Printf("   - GET  /api/v1/study/:id (protected)")
-	log.Printf("   - GET  /api/v1/study/recent (protected)")
 	
 	log.Fatal(http.ListenAndServe(":"+port, handler))
 }
