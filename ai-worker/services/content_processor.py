@@ -1,4 +1,3 @@
-import requests
 from typing import Dict
 
 class ContentProcessor:
@@ -18,40 +17,52 @@ class ContentProcessor:
         7. Quiz generation
         """
         
+        print(f"\n{'='*60}")
+        print(f"🚀 Processing Session: {session_id}")
+        print(f"{'='*60}\n")
+        
         # Step 1: Extract text using OCR
-        print(f"[{session_id}] Starting OCR extraction...")
+        print("Step 1: OCR Text Extraction")
         extracted_text = self.ocr_service.extract_from_url(image_url)
         
         if not extracted_text or len(extracted_text) < 50:
-            raise Exception("Insufficient text extracted from image")
+            raise Exception("Insufficient text extracted from image (less than 50 characters)")
         
-        print(f"[{session_id}] Extracted {len(extracted_text)} characters")
+        print(f"✅ Extracted {len(extracted_text)} characters, {len(extracted_text.split())} words\n")
         
         # Step 2: Detect topic
-        print(f"[{session_id}] Detecting topic...")
+        print("Step 2: Topic Detection")
         topic = self.ai_service.detect_topic(extracted_text)
+        print()
         
         # Step 3: Generate summaries
-        print(f"[{session_id}] Generating summaries...")
+        print("Step 3: Summary Generation")
         summaries = self.ai_service.generate_summary(extracted_text)
+        print()
         
         # Step 4: Generate simplified explanation
-        print(f"[{session_id}] Generating simplified explanation...")
+        print("Step 4: Simplified Explanation")
         explanation = self.ai_service.generate_simplified_explanation(extracted_text)
+        print()
         
         # Step 5: Extract key concepts
-        print(f"[{session_id}] Extracting key concepts...")
+        print("Step 5: Key Concepts Extraction")
         key_concepts = self.ai_service.extract_key_concepts(extracted_text)
+        print()
         
         # Step 6: Generate flashcards
-        print(f"[{session_id}] Generating flashcards...")
+        print("Step 6: Flashcard Generation")
         flashcards = self.ai_service.generate_flashcards(extracted_text, count=10)
+        print()
         
         # Step 7: Generate quiz
-        print(f"[{session_id}] Generating quiz questions...")
+        print("Step 7: Quiz Generation")
         quiz_questions = self.ai_service.generate_quiz(extracted_text, count=5)
+        print()
         
-        print(f"[{session_id}] Processing complete!")
+        print(f"{'='*60}")
+        print(f"✅ Processing Complete!")
+        print(f"{'='*60}\n")
         
         # Return complete result
         return {
